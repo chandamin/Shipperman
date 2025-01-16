@@ -1,6 +1,10 @@
 import { List, Page, Text } from "@shopify/polaris"; // Import the necessary components
 import { authenticate } from "../shopify.server";
 import { useLoaderData } from "@remix-run/react";
+import { PrismaClient } from "@prisma/client";
+
+// Initialize Prisma client
+const prisma = new PrismaClient();
 
 // Helper function to validate the API key on the server and store data
 async function connectApiKeywithStore(key, shop, storeData) {

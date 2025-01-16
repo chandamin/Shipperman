@@ -1,14 +1,15 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "76f7e34fd907e05a8a0b61df6d16a7a3"
-name = "Shipperman Shipping"
-handle = "shipperman-shipping-1"
+client_id = "8d7c3b0b5abb56e8d38279cb429f507e"
+name = "Shiperman"
+handle = "shipperman-shipping"
 application_url = "https://shipperman.onrender.com"
 embedded = true
 
 [build]
 automatically_update_urls_on_dev = true
-dev_store_url = "testelection.myshopify.com"
+dev_store_url = "shipperman-app-test.myshopify.com"
+include_config_on_deploy = true
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
@@ -23,6 +24,18 @@ redirect_urls = [
 
 [webhooks]
 api_version = "2025-01"
+
+  [[webhooks.subscriptions]]
+  uri = "https://plugins.shiperman.com/webhooks/customers/data_request"
+  compliance_topics = [ "customers/redact" ]
+
+  [[webhooks.subscriptions]]
+  uri = "https://plugins.shiperman.com/webhooks/customers/redact"
+  compliance_topics = [ "customers/data_request" ]
+
+  [[webhooks.subscriptions]]
+  uri = "https://plugins.shiperman.com/webhooks/shop/redact"
+  compliance_topics = [ "shop/redact" ]
 
 [pos]
 embedded = false
