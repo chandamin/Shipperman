@@ -16,10 +16,10 @@ ENV NODE_ENV=production
 COPY package.json package-lock.json* ./
 
 # Remove the @shopify/cli package (if necessary)
-RUN npm remove @shopify/cli
+RUN npm remove @shopify/cli || true
 
-# Install node modules with the --force option to ensure any existing issues are bypassed
-RUN npm install --force
+# Install node modules with the --legacy-peer-deps option to bypass dependency conflicts
+RUN npm ci --legacy-peer-deps && npm cache clean --force
 
 # Copy the rest of the application files
 COPY . .
