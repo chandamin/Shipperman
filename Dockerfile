@@ -14,12 +14,11 @@ COPY package.json package-lock.json* ./
 RUN npm ci --omit=dev && npm cache clean --force
 
 # Remove CLI packages since we don't need them in production by default.
+# Remove this line if you want to run CLI commands in your container.
 RUN npm remove @shopify/cli
 
 COPY . .
 
-# After the build step, list the contents of the build directory
-RUN npm run build && echo "Build completed" && ls -la ./build && ls -la ./build/server
-
+RUN npm run build
 
 CMD ["npm", "run", "docker-start"]
