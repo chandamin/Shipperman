@@ -1,0 +1,28 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "76f7e34fd907e05a8a0b61df6d16a7a3"
+name = "Shipperman Shipping"
+handle = "shipperman-shipping-1"
+application_url = "https://movie-pod-hospital-jul.trycloudflare.com"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "testelection.myshopify.com"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "write_markets,write_shipping"
+
+[auth]
+redirect_urls = [
+  "https://movie-pod-hospital-jul.trycloudflare.com/auth/callback",
+  "https://movie-pod-hospital-jul.trycloudflare.com/auth/shopify/callback",
+  "https://movie-pod-hospital-jul.trycloudflare.com/api/auth/callback"
+]
+
+[webhooks]
+api_version = "2025-01"
+
+[pos]
+embedded = false
