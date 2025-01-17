@@ -53,7 +53,9 @@ export const action = async ({ request }) => {
     const data = JSON.parse(formData.get("formData")); // Parse the 'formData' field to get the necessary data
     const apiUrl = formData.get("apiUrl"); // Extract the API URL from the form data
     const apiKey = formData.get("apiKey"); // Extract the API key from the form data
-
+    console.log(apiUrl);
+    console.log(apiKey);
+    console.log(data);
     try {
         // Send a POST request to the external API to create an order
         const response = await fetch(`${apiUrl}/plugin/orders/create-order?X-API-KEY=${apiKey}`, {
@@ -68,7 +70,7 @@ export const action = async ({ request }) => {
 
         // Parse the response JSON to get the result of the order creation
         const responseData = await response.json();
-
+        console.log(responseData);
         // Redirect to the orders page after successful order creation
         return redirect('/app/orders');
     } catch (error) {
@@ -87,13 +89,13 @@ export const action = async ({ request }) => {
 const generateReferenceId = () => {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';  // Allowed characters (uppercase letters and numbers)
     let referenceId = '';  // Initialize the reference ID as an empty string
-    
+
     // Generate a 7-character random ID
     for (let i = 0; i < 7; i++) {
         const randomIndex = Math.floor(Math.random() * chars.length); // Get a random index from the allowed characters
         referenceId += chars[randomIndex]; // Append the randomly selected character to the reference ID
     }
-    
+
     // Return the generated reference ID
     return referenceId;
 };
@@ -104,16 +106,16 @@ export default function CreateOrder() {
 
     const [items, setItems] = useState([
         {
-            id: "",
+            id: 0,
             itemId: 0,
             weight: "",
             name: "",
             sku: "",
-            price: "",
+            price: 0,
             description: "",
-            length: "",
-            width: "",
-            height: "",
+            length: 0,
+            width: 0,
+            height: 0,
         },
     ]);
     const [recipient, setRecipient] = useState({
@@ -135,24 +137,24 @@ export default function CreateOrder() {
         apartmentNumber: "",
         deliveryNote: "",
     });
-    const [referenceId, setReferenceId] = useState(generateReferenceId()); 
-    const [paymentType, setPaymentType] = useState(1); 
+    const [referenceId, setReferenceId] = useState(generateReferenceId());
+    const [paymentType, setPaymentType] = useState(1);
     const [toastVisible, setToastVisible] = useState(false);
 
     const handleAddItem = () => {
         setItems([
             ...items,
             {
-                id: "",
+                id: 0,
                 itemId: items.length,
                 weight: "",
                 name: "",
                 sku: "",
-                price: "",
+                price: 0,
                 description: "",
-                length: "",
-                width: "",
-                height: "",
+                length: 0,
+                width: 0,
+                height: 0,
             },
         ]);
     };
@@ -298,7 +300,7 @@ export default function CreateOrder() {
                                                 <InlineGrid columns={3} gap={400}>
                                                     <TextField
                                                         placeholder="Item ID"
-                                                        value={item.id}
+                                                        value={item.id || ''}
                                                         onChange={(value) => handleChangeItem(index, "id", value)}
                                                     />
                                                     <TextField
@@ -317,31 +319,31 @@ export default function CreateOrder() {
                                                         <TextField
                                                             placeholder="Price"
                                                             type="number"
-                                                            value={item.price}
+                                                            value={item.price || ''}
                                                             onChange={(value) => handleChangeItem(index, "price", value)}
                                                         />
                                                         <TextField
                                                             placeholder="Weight"
                                                             type="number"
-                                                            value={item.weight}
+                                                            value={item.weight || ''}
                                                             onChange={(value) => handleChangeItem(index, "weight", value)}
                                                         />
                                                         <TextField
                                                             placeholder="Length"
                                                             type="number"
-                                                            value={item.length}
+                                                            value={item.length || ''}
                                                             onChange={(value) => handleChangeItem(index, "length", value)}
                                                         />
                                                         <TextField
                                                             placeholder="Width"
                                                             type="number"
-                                                            value={item.width}
+                                                            value={item.width || ''}
                                                             onChange={(value) => handleChangeItem(index, "width", value)}
                                                         />
                                                         <TextField
                                                             placeholder="Height"
                                                             type="number"
-                                                            value={item.height}
+                                                            value={item.height || ''}
                                                             onChange={(value) => handleChangeItem(index, "height", value)}
                                                         />
                                                     </FormLayout.Group>

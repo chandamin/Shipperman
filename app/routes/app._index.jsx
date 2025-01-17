@@ -1,6 +1,6 @@
-import { List, Page, Text } from "@shopify/polaris"; // Import the necessary components
+import { Badge, Banner, BlockStack, Box, Card, InlineGrid, List, Page, Text } from "@shopify/polaris"; // Import the necessary components
 import { authenticate } from "../shopify.server";
-import { useLoaderData } from "@remix-run/react";
+import { redirect, useLoaderData, useNavigate } from "@remix-run/react";
 import { PrismaClient } from "@prisma/client";
 
 // Initialize Prisma client
@@ -120,6 +120,7 @@ export const loader = async ({ request }) => {
   if (!existingData || !existingData.api_key) {
     return {
       enabledCountries,
+      shopUrl
     };
   }
 
@@ -177,31 +178,86 @@ export const loader = async ({ request }) => {
   // Return the enabled countries data
   return {
     enabledCountries,
+    shopUrl
   };
 };
 
 
 export default function IndexPage() {
-  const { enabledCountries } = useLoaderData();
+  const { enabledCountries, shopUrl } = useLoaderData();
+
   return (
     <Page title="App's Home Page (Instruction How to use App)">
-      {enabledCountries.length <= 0 && (
+
+      {enabledCountries.length <= 0 ? (
         <>
-          <Text variant="headingMd" as="h6">
-            Shop/sender countries we currently support:
-          </Text>
-          <Text variant="headingXs" as="h6">
-            We can only service these countries and cannot provide service to online shops which have storage located in any other country:
-          </Text>
-          <List type="bullet" gap="extraTight">
-            <List.Item>Netherlands - Den Haag</List.Item>
-            <List.Item>Germany - Cologne</List.Item>
-            <List.Item>Spain - Madrid</List.Item>
-            <List.Item>Italy - Milan</List.Item>
-            <List.Item>Czech Republic - Prague</List.Item>
-            <List.Item>Poland - Wroclaw</List.Item>
-            <List.Item>Hungary - Budapest</List.Item>
-          </List>
+          <InlineGrid columns={2} gap={400}>
+            <Box>
+              <Banner
+                title="Listed Market Not Found"
+                action={{
+                  content: 'Add Market',
+                  url: 'shopify://admin/settings/markets',
+                  variant: 'primary',
+                }}
+                tone="critical"
+              >
+                <p>
+                  Listed markets are not enabled. Please ensure your store has active markets in the following regions.
+                </p>
+              </Banner>
+            </Box>
+            <Box>
+              <Card>
+                <BlockStack gap={300}>
+                  <Text variant="headingXl" as="h4">
+                    Supported Shop/Sender Countries:
+                  </Text>
+                  <Text variant="headingXs" as="h6">
+                    We can only service the following countries. We cannot provide service to shops with storage located in any other country:
+                  </Text>
+                  <List type="bullet" gap="extraTight">
+                    <List.Item><strong>Netherlands</strong> - Den Haag <Badge tone="attention">NL</Badge></List.Item>
+                    <List.Item><strong>Germany</strong> - Cologne <Badge tone="attention">DE</Badge></List.Item>
+                    <List.Item><strong>Spain</strong> - Madrid <Badge tone="attention">ES</Badge></List.Item>
+                    <List.Item><strong>Italy</strong> - Milan <Badge tone="attention">IT</Badge></List.Item>
+                    <List.Item><strong>Czech Republic</strong> - Prague <Badge tone="attention">CZ</Badge></List.Item>
+                    <List.Item><strong>Poland</strong> - Wroclaw <Badge tone="attention">PL</Badge></List.Item>
+                    <List.Item><strong>Hungary</strong> - Budapest <Badge tone="attention">HU</Badge></List.Item>
+                  </List>
+                  <Banner><strong>NOTE:</strong> Ensure the store has a proper shipping address. To add an address, go to <strong>Settings</strong> &gt; <strong>Locations</strong> &gt; <strong>Address</strong> &gt; <strong>Add Address</strong>. If you already have a location, make sure it includes all necessary details, such as the correct pincode and other required address information.</Banner>
+                </BlockStack>
+              </Card>
+            </Box>
+          </InlineGrid>
+        </>
+
+      ):(
+        <>
+         <InlineGrid>
+            <Box>
+              <Card>
+                <BlockStack gap={300}>
+                  <Text variant="headingXl" as="h4">
+                    Supported Shop/Sender Countries:
+                  </Text>
+                  <Text variant="headingXs" as="h6">
+                    We can only service the following countries. We cannot provide service to shops with storage located in any other country:
+                  </Text>
+                  <List type="bullet" gap="extraTight">
+                    <List.Item><strong>Netherlands</strong> - Den Haag <Badge tone="attention">NL</Badge></List.Item>
+                    <List.Item><strong>Germany</strong> - Cologne <Badge tone="attention">DE</Badge></List.Item>
+                    <List.Item><strong>Spain</strong> - Madrid <Badge tone="attention">ES</Badge></List.Item>
+                    <List.Item><strong>Italy</strong> - Milan <Badge tone="attention">IT</Badge></List.Item>
+                    <List.Item><strong>Czech Republic</strong> - Prague <Badge tone="attention">CZ</Badge></List.Item>
+                    <List.Item><strong>Poland</strong> - Wroclaw <Badge tone="attention">PL</Badge></List.Item>
+                    <List.Item><strong>Hungary</strong> - Budapest <Badge tone="attention">HU</Badge></List.Item>
+                  </List>
+                  <Banner><strong>NOTE:</strong> Ensure the store has a proper shipping address. To add an address, go to <strong>Settings</strong> &gt; <strong>Locations</strong> &gt; <strong>Address</strong> &gt; <strong>Add Address</strong>. If you already have a location, make sure it includes all necessary details, such as the correct pincode and other required address information.</Banner>
+                </BlockStack>
+              </Card>
+            </Box>
+          </InlineGrid>
         </>
       )}
     </Page>
