@@ -130,7 +130,6 @@ export const action = async ({ request }) => {
     },
   );
 
-  // Parse the response and log any errors from the mutation
   const data = await response.json();
   console.log("List of Errors while Creating Shipping Service: ", data.data.carrierServiceCreate.userErrors);
 

@@ -66,11 +66,6 @@ export const action = async ({ request }) => {
             body: JSON.stringify(data), // Send the parsed data as the request body
         });
 
-        // If the response is not OK (i.e., something went wrong), throw an error
-        if (!response.ok) {
-            throw new Error("Failed to create order");
-        }
-
         // Parse the response JSON to get the result of the order creation
         const responseData = await response.json();
 
