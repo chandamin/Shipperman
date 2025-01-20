@@ -109,13 +109,14 @@ export const action = async ({ request }) => {
                 });
 
                 const responseData = await response.json();
+                console.log(`Response Data By API =========:`, JSON.stringify(responseData, null, 2));
                 responseData.rates.forEach(rate => {
                     rate.total_price = Math.round(parseFloat(rate.total_price) * 100); // Round to the nearest integer
                 });
                 
 
                 // Simulate saving the response (like saving to a file)
-                console.log(`Response Data Saved (${timestamp}):`, JSON.stringify(responseData, null, 2));
+                console.log("Response data just before sent =======:",responseData);
 
                 // Return the response to Shopify (as in PHP)
                 return json(responseData);
