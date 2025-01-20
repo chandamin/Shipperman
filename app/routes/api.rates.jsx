@@ -5,7 +5,8 @@ const prisma = new PrismaClient();
 export const action = async ({ request }) => {
 
     const body = await request.json();
-
+    const currencyDef = body.rate.currency;
+    console.log(currencyDef);
     const targetCountries = process.env.TARGET_COUNTRIES
         ? process.env.TARGET_COUNTRIES.split(',').map(country => country.toLowerCase())
         : [];
@@ -111,12 +112,13 @@ export const action = async ({ request }) => {
                 const responseData = await response.json();
                 console.log(`Response Data By API =========:`, JSON.stringify(responseData, null, 2));
                 responseData.rates.forEach(rate => {
-                    rate.total_price = Math.round(parseFloat(rate.total_price) * 100); // Round to the nearest integer
+                    rate.total_price = Math.round(parseFloat(rate.total_price) * 100);
+                    rate.currency = currencyDef;
                 });
-                
+
 
                 // Simulate saving the response (like saving to a file)
-                console.log("Response data just before sent =======:",responseData);
+                console.log("Response data just before sent =======:", responseData);
 
                 // Return the response to Shopify (as in PHP)
                 return json(responseData);
