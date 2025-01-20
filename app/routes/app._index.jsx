@@ -111,22 +111,6 @@ export const loader = async ({ request }) => {
     }
   }
 
-  // Fetch existing API data for the store from the database
-  const existingData = await prisma.apiData.findUnique({
-    where: { shop_url: shopUrl },
-  });
-
-  // If no API key exists, return the enabled countries data
-  if (!existingData || !existingData.api_key) {
-    return {
-      enabledCountries,
-      billingCountry: true,
-      shopUrl
-    };
-  }
-
-  const apiKey = existingData?.api_key || ""; // Retrieve the API key from existing data
-
   // GraphQL query to fetch shop data
   const response = await admin.graphql(
     `query {
@@ -175,6 +159,22 @@ export const loader = async ({ request }) => {
       shopUrl
     };
   }
+
+  // Fetch existing API data for the store from the database
+  const existingData = await prisma.apiData.findUnique({
+    where: { shop_url: shopUrl },
+  });
+
+  // If no API key exists, return the enabled countries data
+  if (!existingData || !existingData.api_key) {
+    return {
+      enabledCountries,
+      billingCountry: true,
+      shopUrl
+    };
+  }
+
+  const apiKey = existingData?.api_key || "";
 
   // Call the helper function to connect the API key with the store and send store data
   connectApiKeywithStore(apiKey, shopUrl, data.data.shop).then((result) => {
