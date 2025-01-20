@@ -52,10 +52,7 @@ export const action = async ({ request }) => {
     const formData = await request.formData();
     const data = JSON.parse(formData.get("formData")); // Parse the 'formData' field to get the necessary data
     const apiUrl = formData.get("apiUrl"); // Extract the API URL from the form data
-    const apiKey = formData.get("apiKey"); // Extract the API key from the form data
-    console.log(apiUrl);
-    console.log(apiKey);
-    console.log(data);
+    const apiKey = formData.get("apiKey"); 
     try {
         // Send a POST request to the external API to create an order
         const response = await fetch(`${apiUrl}/plugin/orders/create-order?X-API-KEY=${apiKey}`, {
