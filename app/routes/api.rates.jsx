@@ -110,8 +110,9 @@ export const action = async ({ request }) => {
 
                 const responseData = await response.json();
                 responseData.rates.forEach(rate => {
-                    rate.total_price = (parseFloat(rate.total_price) * 100).toFixed(2);
+                    rate.total_price = Math.round(parseFloat(rate.total_price) * 100); // Round to the nearest integer
                 });
+                
 
                 // Simulate saving the response (like saving to a file)
                 console.log(`Response Data Saved (${timestamp}):`, JSON.stringify(responseData, null, 2));
