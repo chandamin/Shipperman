@@ -12,7 +12,10 @@ export const loader = async ({ request }) => {
 
 export const action = async ({ request }) => {
   const requestBody = await request.json();
+  console.log(requestBody.shipping_lines[0].source);
+  console.log("ENV VARIABLE FETCH ",process.env.CARRIER_SERVICE_NAME);
   if (requestBody.shipping_lines[0].source !== process.env.CARRIER_SERVICE_NAME) {
+    console.log("=======================================");
     return null;
   }
   const match = requestBody.order_status_url.match(/^https:\/\/([a-zA-Z0-9-]+\.myshopify\.com)/);

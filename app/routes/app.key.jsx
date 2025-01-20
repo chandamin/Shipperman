@@ -133,6 +133,43 @@ export const action = async ({ request }) => {
   const data = await response.json();
   console.log("List of Errors while Creating Shipping Service: ", data.data.carrierServiceCreate.userErrors);
 
+
+
+  // ===============================CREATE WEBHOOK TO HIT WHENEVER ORDER IS CREATED============
+  const responseWebhook = await admin.graphql(
+    `#graphql
+    mutation WebhookSubscriptionCreate($topic: WebhookSubscriptionTopic!, $webhookSubscription: WebhookSubscriptionInput!) {
+      webhookSubscriptionCreate(topic: $topic, webhookSubscription: $webhookSubscription) {
+        webhookSubscription {
+          id
+          topic
+          apiVersion {
+            handle
+          }
+          format
+          createdAt
+        }
+        userErrors {
+          field
+          message
+        }
+      }
+    }`,
+    {
+      variables: {
+        "topic": "ORDERS_CREATE",
+        "webhookSubscription": {
+          "callbackUrl": process.env.ORDER_CREATE_WEBHOOK,
+          // "callbackUrl": "https://riverside-import-rugby-count.trycloudflare.com/app/test-api",
+          "format": "JSON"
+        }
+      },
+    },
+  );
+  
+  const dataWebhook = await responseWebhook.json();
+  console.log("Webhook Creation Error: ",dataWebhook.data.userErrors);
+
   return null; // Return null after the action is completed
 };
 

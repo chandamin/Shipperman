@@ -120,6 +120,7 @@ export const loader = async ({ request }) => {
   if (!existingData || !existingData.api_key) {
     return {
       enabledCountries,
+      billingCountry: true,
       shopUrl
     };
   }
@@ -139,6 +140,7 @@ export const loader = async ({ request }) => {
           phone
           provinceCode
           country
+          countryCodeV2
         }
         name
         email
@@ -164,6 +166,15 @@ export const loader = async ({ request }) => {
   );
 
   const data = await response.json(); // Parse the shop data response
+  const countryCode = data?.data?.shop?.billingAddress?.countryCodeV2;
+  const isTargetCountry = targetCountries.includes(countryCode);
+  if (!isTargetCountry) {
+    return {
+      enabledCountries,
+      billingCountry: false,
+      shopUrl
+    };
+  }
 
   // Call the helper function to connect the API key with the store and send store data
   connectApiKeywithStore(apiKey, shopUrl, data.data.shop).then((result) => {
@@ -178,63 +189,89 @@ export const loader = async ({ request }) => {
   // Return the enabled countries data
   return {
     enabledCountries,
+    billingCountry: true,
     shopUrl
   };
 };
 
 
 export default function IndexPage() {
-  const { enabledCountries, shopUrl } = useLoaderData();
+  const { enabledCountries, shopUrl, billingCountry } = useLoaderData();
 
   return (
     <Page title="App's Home Page (Instruction How to use App)">
 
-      {enabledCountries.length <= 0 ? (
-        <>
-          <InlineGrid columns={2} gap={400}>
-            <Box>
-              <Banner
-                title="Listed Market Not Found"
-                action={{
-                  content: 'Add Market',
-                  url: 'shopify://admin/settings/markets',
-                  variant: 'primary',
-                }}
-                tone="critical"
-              >
-                <p>
-                  Listed markets are not enabled. Please ensure your store has active markets in the following regions.
-                </p>
-              </Banner>
-            </Box>
-            <Box>
-              <Card>
-                <BlockStack gap={300}>
-                  <Text variant="headingXl" as="h4">
-                    Supported Shop/Sender Countries:
-                  </Text>
-                  <Text variant="headingXs" as="h6">
-                    We can only service the following countries. We cannot provide service to shops with storage located in any other country:
-                  </Text>
-                  <List type="bullet" gap="extraTight">
-                    <List.Item><strong>Netherlands</strong> - Den Haag <Badge tone="attention">NL</Badge></List.Item>
-                    <List.Item><strong>Germany</strong> - Cologne <Badge tone="attention">DE</Badge></List.Item>
-                    <List.Item><strong>Spain</strong> - Madrid <Badge tone="attention">ES</Badge></List.Item>
-                    <List.Item><strong>Italy</strong> - Milan <Badge tone="attention">IT</Badge></List.Item>
-                    <List.Item><strong>Czech Republic</strong> - Prague <Badge tone="attention">CZ</Badge></List.Item>
-                    <List.Item><strong>Poland</strong> - Wroclaw <Badge tone="attention">PL</Badge></List.Item>
-                    <List.Item><strong>Hungary</strong> - Budapest <Badge tone="attention">HU</Badge></List.Item>
-                  </List>
-                  <Banner><strong>NOTE:</strong> Ensure the store has a proper shipping address. To add an address, go to <strong>Settings</strong> &gt; <strong>Locations</strong> &gt; <strong>Address</strong> &gt; <strong>Add Address</strong>. If you already have a location, make sure it includes all necessary details, such as the correct pincode and other required address information.</Banner>
-                </BlockStack>
-              </Card>
-            </Box>
-          </InlineGrid>
-        </>
+      {enabledCountries.length <= 0 || !billingCountry ? (
+        <InlineGrid columns={2} gap={400}>
+          <BlockStack gap={400}>
+            {/* If enabledCountries is empty */}
+            {enabledCountries.length <= 0 && (
+              <Box>
+                <Banner
+                  title="Listed Market Not Found"
+                  action={{
+                    content: 'Add Market',
+                    url: 'shopify://admin/settings/markets',
+                    variant: 'primary',
+                  }}
+                  tone="critical"
+                >
+                  <p>
+                    Listed markets are not enabled. Please ensure your store has active markets in the following regions.
+                  </p>
+                </Banner>
+              </Box>
+            )}
+            
+            {/* If billingCountry is not present */}
+            {!billingCountry && (
+              <Box>
+                <Banner
+                  title="Listed Address Not Found"
+                  action={{
+                    content: 'Change Address',
+                    url: 'shopify://admin/settings',
+                    variant: 'primary',
+                  }}
+                  tone="critical"
+                >
+                  <p>
+                    Billing Address does not match the listed countries. Please ensure your store has a billing address in the following regions.
+                  </p>
+                </Banner>
+              </Box>
+            )}
+          </BlockStack>
 
-      ):(
+          {/* Information about supported countries */}
+          <Box>
+            <Card>
+              <BlockStack gap={300}>
+                <Text variant="headingXl" as="h4">
+                  Supported Shop/Sender Countries:
+                </Text>
+                <Text variant="headingXs" as="h6">
+                  We can only service the following countries. We cannot provide service to shops with storage located in any other country:
+                </Text>
+                <List type="bullet" gap="extraTight">
+                  <List.Item><strong>Netherlands</strong> - Den Haag <Badge tone="attention">NL</Badge></List.Item>
+                  <List.Item><strong>Germany</strong> - Cologne <Badge tone="attention">DE</Badge></List.Item>
+                  <List.Item><strong>Spain</strong> - Madrid <Badge tone="attention">ES</Badge></List.Item>
+                  <List.Item><strong>Italy</strong> - Milan <Badge tone="attention">IT</Badge></List.Item>
+                  <List.Item><strong>Czech Republic</strong> - Prague <Badge tone="attention">CZ</Badge></List.Item>
+                  <List.Item><strong>Poland</strong> - Wroclaw <Badge tone="attention">PL</Badge></List.Item>
+                  <List.Item><strong>Hungary</strong> - Budapest <Badge tone="attention">HU</Badge></List.Item>
+                </List>
+                <Banner>
+                  <strong>NOTE:</strong> Ensure the store has a proper shipping address. To add an address, go to <strong>Settings</strong> &gt; <strong>Locations</strong> &gt; <strong>Address</strong> &gt; <strong>Add Address</strong>. If you already have a location, make sure it includes all necessary details, such as the correct pincode and other required address information.
+                </Banner>
+              </BlockStack>
+            </Card>
+          </Box>
+        </InlineGrid>
+      ) : (
         <>
-         <InlineGrid>
+          <InlineGrid>
             <Box>
               <Card>
                 <BlockStack gap={300}>

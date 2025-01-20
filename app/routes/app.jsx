@@ -32,24 +32,46 @@ export const loader = async ({ request }) => {
     }
   }
 
-  // Return the shop data and the list of enabled countries
+  // GraphQL query to fetch shop data
+  const response = await admin.graphql(
+    `query {
+      shop {
+        billingAddress {
+          countryCodeV2
+        }
+      }
+    }`
+  );
+
+  const data = await response.json(); 
+  const countryCode = data?.data?.shop?.billingAddress?.countryCodeV2;
+  const isTargetCountry = targetCountries.includes(countryCode);
+  if (!isTargetCountry) {
+    return {
+      apiKey: process.env.SHOPIFY_API_KEY || "",
+      enabledCountries,
+      billingCountry: false
+    };
+  }
+
   return {
     apiKey: process.env.SHOPIFY_API_KEY || "",
     enabledCountries,
+    billingCountry: true,
   };
   
 };
 
 export default function App() {
-  const { apiKey, enabledCountries } = useLoaderData();
-
+  const { apiKey, enabledCountries, billingCountry } = useLoaderData();
+console.log("Billing:",billingCountry)
   return (
     <AppProvider isEmbeddedApp apiKey={apiKey}>
       <NavMenu>
         <Link to="/app/" rel="home">
           Home
         </Link>
-        {enabledCountries.length > 0 && (
+        {enabledCountries.length > 0 && billingCountry && (
           <>
           <Link to="/app/wallet">Wallet Info</Link>
           <Link to="/app/key">API Key Info</Link>

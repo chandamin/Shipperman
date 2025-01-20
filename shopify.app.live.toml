@@ -3,7 +3,7 @@
 client_id = "8d7c3b0b5abb56e8d38279cb429f507e"
 name = "Shiperman"
 handle = "shipperman-shipping"
-application_url = "https://shipperman.onrender.com"
+application_url = "https://riverside-import-rugby-count.trycloudflare.com"
 embedded = true
 
 [build]
@@ -13,13 +13,13 @@ include_config_on_deploy = true
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "write_markets,write_shipping"
+scopes = "read_orders,write_markets,write_shipping"
 
 [auth]
 redirect_urls = [
-  "https://shipperman.onrender.com/auth/callback",
-  "https://shipperman.onrender.com/auth/shopify/callback",
-  "https://shipperman.onrender.com/api/auth/callback"
+  "https://riverside-import-rugby-count.trycloudflare.com/auth/callback",
+  "https://riverside-import-rugby-count.trycloudflare.com/auth/shopify/callback",
+  "https://riverside-import-rugby-count.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
