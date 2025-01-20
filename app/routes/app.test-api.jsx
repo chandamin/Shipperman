@@ -1,4 +1,3 @@
-import { authenticate } from "../shopify.server";
 import { PrismaClient } from "@prisma/client";
 
 // Initialize Prisma client

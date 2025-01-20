@@ -3,7 +3,7 @@
 client_id = "8d7c3b0b5abb56e8d38279cb429f507e"
 name = "Shiperman"
 handle = "shipperman-shipping"
-application_url = "https://discussion-carry-trade-greatest.trycloudflare.com"
+application_url = "https://shipperman.onrender.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "write_markets,write_shipping"
 
 [auth]
 redirect_urls = [
-  "https://discussion-carry-trade-greatest.trycloudflare.com/auth/callback",
-  "https://discussion-carry-trade-greatest.trycloudflare.com/auth/shopify/callback",
-  "https://discussion-carry-trade-greatest.trycloudflare.com/api/auth/callback"
+  "https://shipperman.onrender.com/auth/callback",
+  "https://shipperman.onrender.com/auth/shopify/callback",
+  "https://shipperman.onrender.com/api/auth/callback"
 ]
 
 [webhooks]
