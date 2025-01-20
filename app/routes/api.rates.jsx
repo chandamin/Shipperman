@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export const action = async ({ request }) => {
-    
+
     const body = await request.json();
 
     const targetCountries = process.env.TARGET_COUNTRIES
@@ -13,7 +13,7 @@ export const action = async ({ request }) => {
     const destinationCountry = body.rate.destination.country?.toLowerCase();
 
     if (!targetCountries.includes(destinationCountry)) {
-        console.log("Destination country is: ",body.rate.destination.country ,", which is not in target countries. Returning null.");
+        console.log("Destination country is: ", body.rate.destination.country, ", which is not in target countries. Returning null.");
         return null;
     }
 
@@ -109,6 +109,9 @@ export const action = async ({ request }) => {
                 });
 
                 const responseData = await response.json();
+                responseData.rates.forEach(rate => {
+                    rate.total_price = (parseFloat(rate.total_price) * 100).toFixed(2);
+                });
 
                 // Simulate saving the response (like saving to a file)
                 console.log(`Response Data Saved (${timestamp}):`, JSON.stringify(responseData, null, 2));
