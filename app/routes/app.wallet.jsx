@@ -105,7 +105,7 @@ export default function WalletPage() {
                         <BlockStack gap="200">
                             <InlineGrid columns="1fr auto">
                                 <Box>
-                                    <Text variant="headingMd" as="h2">Basic Plan Statring from (€10)
+                                    <Text variant="headingMd" as="h2">Basic Plan Statring from ($10)
                                         <Badge size="small" tone="attention">New</Badge>
                                     </Text>
                                 </Box>
