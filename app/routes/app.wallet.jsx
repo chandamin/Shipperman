@@ -1,7 +1,11 @@
 import { useLoaderData } from "@remix-run/react";
-import { Page, Layout, Card, Text, Banner, Button } from "@shopify/polaris";
+import { Page, Layout, Card, Text, Banner, Button, InlineGrid, Box, BlockStack, Badge, List, Link, Icon, InlineStack } from "@shopify/polaris";
 import { PrismaClient } from "@prisma/client";
 import { authenticate } from "../shopify.server";
+import {
+    AlertBubbleIcon,
+    PlusIcon
+} from '@shopify/polaris-icons';
 
 const prisma = new PrismaClient();
 // Loader function to fetch wallet data using the API key and stage URL from the database
@@ -81,17 +85,73 @@ export default function WalletPage() {
 
     return (
         <Page title="Wallet Info" backAction={{ content: 'Back', url: '/app/' }}>
-            <Layout>
-                <Layout.Section>
-                    <Card title="Wallet Information" sectioned>
-                        <Text variant="bodyLg" fontWeight="bold">
-                            Balance: {walletData.balance} {walletData.currency}
-                        </Text>
-                        <Text variant="bodyMd">Currency: {walletData.currency}</Text>
-                        <Text variant="bodyMd">Last Updated: {new Date(data.date * 1000).toLocaleString()}</Text>
+            <InlineGrid columns={2} gap={400}>
+                <Box>
+                    <Card>
+                        <BlockStack gap={300}>
+                            <Text variant="headingLg" as="h2">Wallet Information</Text>
+                            <Box>
+                                <Text variant="bodyLg" fontWeight="bold">
+                                    Balance: {parseFloat(walletData.balance).toFixed(2)} {walletData.currency}
+                                </Text>
+                                <Text variant="bodyMd">Currency: <Badge>{walletData.currency}</Badge></Text>
+                                <Text variant="bodyMd">Last Updated: {new Date(data.date * 1000).toLocaleString()}</Text>
+                            </Box>
+                        </BlockStack>
                     </Card>
-                </Layout.Section>
-            </Layout>
+                </Box>
+                <Box>
+                    <Card roundedAbove="sm">
+                        <BlockStack gap="200">
+                            <InlineGrid columns="1fr auto">
+                                <Box>
+                                    <Text variant="headingMd" as="h2">Basic Plan Statring from (€10)
+                                        <Badge size="small" tone="attention">New</Badge>
+                                    </Text>
+                                </Box>
+                                <Button url="https://platform.shiperman.com/wallet" variant="primary" target="_blank" tone="Success" icon={PlusIcon} size="micro">Cash</Button>
+                            </InlineGrid>
+                            <Box>
+                                <List.Item>Wallet-based billing system.</List.Item>
+                                <List.Item>Affordable shipping and carrier services.</List.Item>
+                                <List.Item>Easy order tracking.</List.Item>
+                            </Box>
+                        </BlockStack>
+                    </Card>
+                </Box>
+            </InlineGrid>
+            <Box paddingBlock={400}>
+                {/* <Card> */}
+                    {/* <InlineStack>
+                        <Box width="3%">
+                            <Icon source={AlertBubbleIcon} tone="info"/>
+                        </Box>
+                        <Text variant="headingMd" as="h2"></Text>
+                    </InlineStack> */}
+                    <Banner title="Instructions">
+                    <List type="none">
+                        <List.Item>
+                            <strong>Step 1:</strong> You need to click on the <strong>"+ Cash"</strong> button, which will redirect you to <Link url="https://platform.shiperman.com" target="_blank">Admin</Link>.
+                        </List.Item>
+                        <List.Item>
+                            <strong>Step 2:</strong> There, you will need to log in or register for an account.
+                        </List.Item>
+                        <List.Item>
+                            <strong>Step 3:</strong> After that, click on <strong>"Wallet"</strong> in the right sidebar.
+                        </List.Item>
+                        <List.Item>
+                            <strong>Step 4:</strong> Add money to your wallet by choosing any amount of your choice.
+                        </List.Item>
+                        <List.Item>
+                            <strong>Step 5:</strong> Once the payment is successfully processed, return to the app.
+                        </List.Item>
+                        <List.Item>
+                            <strong>Step 6:</strong> Your wallet will be recharged.
+                        </List.Item>
+                    </List>
+                    </Banner>
+                {/* </Card> */}
+            </Box>
         </Page>
     );
 }

@@ -3,7 +3,7 @@
 client_id = "8d7c3b0b5abb56e8d38279cb429f507e"
 name = "Shiperman"
 handle = "shipperman-shipping"
-application_url = "https://shipperman.onrender.com"
+application_url = "https://portable-audit-dominant-edge.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,24 +17,24 @@ scopes = "read_orders,write_markets,write_shipping"
 
 [auth]
 redirect_urls = [
-  "https://shipperman.onrender.com/auth/callback",
-  "https://shipperman.onrender.com/auth/shopify/callback",
-  "https://shipperman.onrender.com/api/auth/callback"
+  "https://portable-audit-dominant-edge.trycloudflare.com/auth/callback",
+  "https://portable-audit-dominant-edge.trycloudflare.com/auth/shopify/callback",
+  "https://portable-audit-dominant-edge.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
 api_version = "2025-01"
 
   [[webhooks.subscriptions]]
-  uri = "https://shipperman.onrender.com/webhooks/customers/data_request"
+  uri = "/webhooks/customers/data_request"
   compliance_topics = [ "customers/redact" ]
 
   [[webhooks.subscriptions]]
-  uri = "https://shipperman.onrender.com/webhooks/customers/redact"
+  uri = "/webhooks/customers/redact"
   compliance_topics = [ "customers/data_request" ]
 
   [[webhooks.subscriptions]]
-  uri = "https://shipperman.onrender.com/webhooks/shop/redact"
+  uri = "/webhooks/shop/redact"
   compliance_topics = [ "shop/redact" ]
 
 [pos]
