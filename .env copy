@@ -1,0 +1,13 @@
+SHOPIFY_API_KEY=8d7c3b0b5abb56e8d38279cb429f507e
+SHOPIFY_API_SECRET=3b93a8636e247c2bff0a58f44095bc40
+SCOPES=write_shipping,write_markets
+PORT=3000
+HOST=0.0.0.0
+SHOPIFY_APP_URL=https://shipperman.onrender.com/
+CARRIER_SERVICE_NAME=Shipperman Shipping Rate Provider
+CARRIER_SERVICE_CALLBACK_URL=https://shipperman.onrender.com/api/rates
+CARRIER_SERVICE_SUPPORTS_DISCOVERY=true
+CARRIER_SERVICE_ACTIVE=true
+TARGET_COUNTRIES=CZ,DE,IT,ES,PL,NL
+ORDER_CREATE_WEBHOOK=https://shipperman.onrender.com/app/test-api
+DATABASE_URL="mongodb+srv://admin:admin@database.gnxi7re.mongodb.net/myDatabase?retryWrites=true&w=majority&appName=database"
