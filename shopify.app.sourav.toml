@@ -3,7 +3,7 @@
 client_id = "cfc509f26ffaa21469d0ba3b3f01a290"
 name = "product-list"
 handle = "product-list-37"
-application_url = "https://ef83-122-160-255-97.ngrok-free.app"
+application_url = "https://d56a-122-160-255-97.ngrok-free.app/"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "write_shipping,write_markets"
 
 [auth]
 redirect_urls = [
-  "https://ef83-122-160-255-97.ngrok-free.app/callback",
-  "https://ef83-122-160-255-97.ngrok-free.app/shopify/callback",
-  "https://ef83-122-160-255-97.ngrok-free.app/api/auth/callback"
+  "https://d56a-122-160-255-97.ngrok-free.app//callback",
+  "https://d56a-122-160-255-97.ngrok-free.app//shopify/callback",
+  "https://d56a-122-160-255-97.ngrok-free.app//api/auth/callback"
 ]
 
 [webhooks]
